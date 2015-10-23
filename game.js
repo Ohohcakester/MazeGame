@@ -1,15 +1,18 @@
 // REGION - MAZES - START
 
-/*var maze = [
-'1 1 1 1 1 1 1 1 1 1',
-'1 P 0 0 0 0 D4 0 0 1',
-'1 0 0 S1 0 0 D3 0 0 1',
-'1 0 0 S2 0 0 d2 0 0 1',
-'1 0 0 0 0 0 D1 0 G 1',
-'1 1 1 1 1 1 1 1 1 1',
-].join('\n')*/
+var maze_sample = [
+'1 1  1  1  1 1 1  1 1  1 1',
+'1 0  S1 0  0 0 D1 0 0  S2 1',
+'1 P  0  0  0 0 1  1 0  0 1',
+'1 0  0  0  0 0 D3 0 0  0 1',
+'1 0  0  0  0 0 1  1 d1 1 1',
+'1 D2 1  D3 1 1 1  1 D3 1 1',
+'1 0  0  0  1 1 0  0 0  0 1',
+'1 0  0  S3 1 1 0  0 G  0 1',
+'1 1  1  1  1 1 1  1 1  1 1',
+].join('\n')
 
-var maze = [
+var maze_exp = [
 '1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1',
 '1 S1 0  0  1 S1 S2 0  1 S1 S2 S3 1 S1 S2 S3 1 S1 S2 S3 1 S1 S2 S3 1 S1 S2 S3 1 G  1',
 '1 0  0  0  1 0  0  0  1 0  0  0  1 S4 0  0  1 S4 S5 0  1 S4 S5 S6 1 S4 S5 S6 1 0  1',
@@ -26,8 +29,24 @@ var maze = [
 '1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1  1  1 1  1',
 ].join('\n')
 
+var maze_3sat = [
+'1 1  1  1  1  1  1  1 1  1 1  1 1  1 1  1 1  1 1  1 1  1 1  1 1',
+'1 S1 S2 S3 S4 S5 D1 0 d5 0 D3 0 D2 0 D4 0 d3 0 D3 0 d1 0 d3 0 1',
+'1 P  0  0  0  0  d2 0 d2 0 D5 0 d4 0 D3 0 D2 0 d2 0 D5 0 D4 0 1',
+'1 0  0  0  0  0  D5 0 D1 0 D2 0 d3 0 D2 0 d4 0 D4 0 D2 0 D1 0 1',
+'1 1  1  1  1  1  1  1 1  1 1  1 1  1 1  1 1  1 1  1 1  1 1  0 1',
+'1 0  d5 0  D4 0  d1 0 d4 0 D5 0 d4 0 D3 0 d1 0 d4 0 d1 0 D2 0 1',
+'1 G  d4 0  D2 0  D5 0 d5 0 d3 0 d3 0 D4 0 d5 0 d3 0 D1 0 d4 0 1',
+'1 0  D2 0  D1 0  D3 0 D2 0 d1 0 D2 0 d2 0 d4 0 d1 0 D5 0 d5 0 1',
+'1 1  1  1  1  1  1  1 1  1 1  1 1  1 1  1 1  1 1  1 1  1 1  1 1',
+].join('\n')
+
+// REGION - MAZES - END
+
+
 
 var colours = [
+undefined,
 '#ff0000',
 '#00ff00',
 '#0000ff',
@@ -47,9 +66,6 @@ var colours = [
 '#ffff80',
 '#ff80ff',
 ]
-
-
-// REGION - MAZES - END
 
 // REGION - HTML5 CANVAS BOILERPLATE - START
 var width = 600;
@@ -224,7 +240,7 @@ function flipSwitch(x,y) {
 //REGION - SPAWNING - END
 
 
-function initGame() {
+function initGame(maze) {
     gameOver = false;
     rows = maze.split('\n');
     sizeY = rows.length;
@@ -285,28 +301,33 @@ function keyboardPress(e) {
                 playerY--;
                 afterMove();
             }
+            e.preventDefault();
             break;
         case 40: // Down
             if (!isBlocked(playerX, playerY+1)) {
                 playerY++;
                 afterMove();
             }
+            e.preventDefault();
             break;
         case 37: // Left
             if (!isBlocked(playerX-1, playerY)) {
                 playerX--;
                 afterMove();
             }
+            e.preventDefault();
             break;
         case 39: // Right
             if (!isBlocked(playerX+1, playerY)) {
                 playerX++;
                 afterMove();
             }
+            e.preventDefault();
             break;
         case 32: // SPACE
         case 90: // Z
             flipSwitch(playerX,playerY);
+            e.preventDefault();
             break;
     }
     redraw();

@@ -4,11 +4,15 @@
         <title>The Impossible Game</title>
     </head>
     <body class="main">
+        Choose Puzzle Instance:
+        <button onclick="initGame(maze_sample)">Sample</button>
+        <button onclick="initGame(maze_3sat)">3-SAT</button>
+        <button onclick="initGame(maze_exp)" title="Credit: Ruomu">Bit Counter</button>
         <div id='window'>
             <font color=#ffffff>Game</font><br>
             <canvas id='mainCanvas'></canvas>
             <script src="game.js"></script>
-            <script type='text/javascript'>window.onload = initGame</script>
+            <script type='text/javascript'>window.onload = initGame(maze_sample)</script>
         </div>
     </body>
 </html>
